@@ -1,4 +1,4 @@
-## TL;DR
+## soybean framewaork
 A model para soja deve integrar variáveis biofísicas e socioeconômicas em estruturas de aprendizado profundo, como Time Fusion Transformers ou Wide-and-Deep, utilizando validação cruzada para garantir precisão na previsão de produtividade, custos e rentabilidade.
 
 ----
