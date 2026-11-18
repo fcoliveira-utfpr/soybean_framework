@@ -121,6 +121,33 @@ MB = Ŷ × P̂ − COE      MLiq = Ŷ × P̂ − COT
 - fase ENSO × fase da safra;
 - classe Köppen × janela fenológica.
 
+### 6.5 Tratamento monetário (deflação)
+
+Todos os valores em reais (preços DERAL e CEPEA, custos CONAB, diesel, fertilizantes, frete, margens) são convertidos para valores reais antes da modelagem.
+
+| Item | Decisão |
+|---|---|
+| Deflator principal | IGP-DI (FGV), usado por CEPEA e CONAB em séries agrícolas deflacionadas |
+| Deflator alternativo (sensibilidade) | IPCA (IBGE, BCB/SGS série 433) |
+| Data-base | dezembro de 2025 = 100 |
+| Fórmula | V_real(t) = V_nominal(t) × [I(base) / I(t)] |
+| Variáveis em US$ (CBOT, prêmio, exportações FOB) | não deflacionadas; entram na escala original, e a conversão para R$ ocorre via câmbio PTAX |
+| Câmbio | usado nominal no modelo; câmbio real efetivo (BCB) como variável alternativa |
+
+**Margem dentro da safra.** Custos (COE/COT) incorridos no plantio e receita obtida na comercialização são levados à mesma data-base antes do cálculo:
+
+MLiq_real = Ŷ × P̂_real(t_venda) − COT_real(t_plantio)
+
+**Previsão nominal (uso operacional).** O modelo é treinado e avaliado em termos reais. Para o produtor, a previsão é reinflacionada:
+
+P̂_nominal(t+h) = P̂_real(t+h) × [Î(t+h) / I(base)]
+
+Î(t+h) vem da mediana das expectativas do Boletim Focus (BCB) disponível na data da previsão.
+
+**Controle de vazamento.** O índice do mês *t* só é divulgado em *t+1*. Na base com versões por data de publicação, a deflação em tempo real usa I(t−1) ou a projeção Focus.
+
+**Análise de sensibilidade.** Repetir as variantes V2 e V4 com: (a) IGP-DI; (b) IPCA; (c) preço em US$ (P_R$ / PTAX). Comparar o RMSE, o MASE e a estabilidade dos valores SHAP.
+
 ---
 
 ## 7. Arquitetura proposta (AgroWDN-BR)
@@ -178,6 +205,7 @@ MB = Ŷ × P̂ − COE      MLiq = Ŷ × P̂ − COT
 5. **Revisões de estimativa:** variação entre levantamentos consecutivos da CONAB (Δ produção), como "surpresa de oferta".
 6. **Variáveis de calendário:** meses até a colheita e fração da safra já comercializada (quando houver dado).
 7. **Controle de vazamento de informação (crítico):** cada variável entra só a partir da data em que fica pública. A PAM sai cerca de 10 meses após a safra, e a CONAB publica em datas fixas. Montar uma base com as versões publicadas em cada data (*vintage*).
+8.  **Transformação do alvo:** modelar o log do preço real, ln(P_real), ou sua variação, Δln(P_real), para estabilizar a variância e reduzir a não estacionariedade. Reportar as métricas na escala original (R$ sc⁻¹, valores reais de dez/2025) e, para o uso operacional, também em valores nominais.
 
 ---
 
