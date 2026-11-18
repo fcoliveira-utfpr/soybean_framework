@@ -93,9 +93,9 @@ MB = Ŷ × P̂ − COE      MLiq = Ŷ × P̂ − COT
 
 | Variável | Fonte / ferramenta | Repositório |
 |---|---|---|
-| Precipitação, Tmax, Tmin, Rs, UR, vento diários | asset GEE `inmet_pr_diario`; grade Xavier (BR-DWGD); NASA POWER | `agrometeorologiapy` |
+| Precipitação, Tmax, Tmin, Rs, UR, vento diários | grade Xavier (BR-DWGD) | `agrometeorologiapy` |
 | ETo (FAO-56 PM) e balanço hídrico | `agrometeorologiapy` | `agrometeorologiapy` |
-| ISNA (índice de satisfação das necessidades de água) por decêndio | balanço hídrico sequencial | `aquacrop_ml` |
+| ISNA (índice de satisfação das necessidades de água) por decêndio | balanço hídrico sequencial | `aquacrop_ml` e  `agrometeorologiapy` |
 | SPI-1, SPI-3 | grade de precipitação | `spi-enso` |
 | Índices de El Niño/La Niña (ONI, SOI) | NOAA CPC | `spi-enso` |
 | GPP (MOD17A2H), NDVI/EVI (MOD13Q1) mascarados por soja | GEE + MapBiomas | — |
